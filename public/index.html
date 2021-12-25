@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Adams IT News</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        function viewNews(id) {
+            var newUrl = window.location.origin + "/news.html?newsID=" + id;
+            window.location = newUrl;
+        }
+
+        function showModal() {
+            let viewPost = document.querySelector(".modal");
+            viewPost.classList.add('active');
+        }
+        function closeModal() {
+            let viewPost = document.querySelector(".modal");
+            viewPost.classList.remove('active');
+        }
+        function createPost() {
+            let title = document.querySelector(".inputTitle").value;
+            let body = document.querySelector(".inputBody").value;
+            if (!title || !body) {
+                return
+            }
+
+            fetch('https://jsonplaceholder.typicode.com/posts', {
+                method: 'POST',
+                body: JSON.stringify({
+                    title: title,
+                    body: body,
+                    userId: 1,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
+            .then((response) => response.json())
+            .then((json) => {
+                const newPostCreated = `
+                <div class="news-card">
+                    <img src="images/news.jpg" />
+                    <h2>${json.title}</h2>
+                    <span>Posted on January 7, 2008 by admin</span>
+                    <p>
+                        ${json.body.substring(0, 100)}...
+                    </p>
+                    <button onClick="viewNews(${json.id})">Continue Reading</button>
+                </div>
+                `
+                let getPosts = document.querySelector(".main-news");
+
+                const oldPosts = getPosts.innerHTML
+                getPosts.innerHTML = newPostCreated + oldPosts
+                closeModal()
+            });
+        }
+
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then(response => response.json())
+            .then(json => {
+                let viewPost = document.querySelector(".main-news");
+                for (let i = 0; i < 8; i++)
+                    viewPost.innerHTML += `
+                <div class="news-card">
+                    <img src="images/news.jpg" />
+                    <h2>${json[i].title}</h2>
+                    <span>Posted on January 7, 2008 by admin</span>
+                    <p>
+                        ${json[i].body.substring(0, 100)}...
+                    </p>
+                    <button onClick="viewNews(${json[i].id})">Continue Reading</button>
+                </div>
+                `
+            })
+    </script>
+</head>
+
+<body>
+    <div class="modal">
+        <div class="modal-container">
+            <p onclick="closeModal()" class="closeModal">X</p>
+            <h3>Create News</h3>
+            <input class="inputTitle" type="text" placeholder="Title" />
+            <textarea rows="10" placeholder='Body' class="inputBody"></textarea>
+            <button onclick="createPost()">Accept</button>
+        </div>
+    </div>
+    <div class="wrapper">
+
+        <header class="header">
+            <div class="navbar">
+                <div class="navbar-left">
+                    <a href="#">HOME</a>
+                    <a href="#">ABOUT US</a>
+                    <a href="#">DEMO PAGE</a>
+                    <a href="#">CONTACT PAGE</a>
+                </div>
+                <div class="navbar-right">
+                    <p>Subscribe: </p>
+                    <div onclick="showModal()" class="new-post">New Post</div>
+                    <a href="#">Posts</a>
+                    <a href="#">Comments</a>
+                    <a href="#">Email</a>
+                </div>
+            </div>
+            <div class="banner">
+                <div class="banner-title">
+                    <h1>THE WEB NEWS</h1>
+                    <p>Free CSS Template</p>
+                </div>
+                <div class="banner-advertise">
+                    Advertise Here
+                </div>
+            </div>
+        </header>
+        <div class="categories">
+            <a href="#">Advertising</a>
+            <a href="#">Entertainment</a>
+            <a href="#">Fashion</a>
+            <a href="#">Lifestyle</a>
+            <a href="#">Pictures</a>
+            <a href="#">Videos</a>
+        </div>
+        <div class="main">
+            <div class="main-news">
+
+            </div>
+            <div class="main-sidebar">
+                <div class="advertises">
+                    <div class="advertises-row">
+                        <div class="advertises-card">
+                            <p>Advertise Here!</p>
+                            <h2>125x125</h2>
+                        </div>
+                        <div class="advertises-card">
+                            <p>Advertise Here!</p>
+                            <h2>125x125</h2>
+                        </div>
+                    </div>
+                    <div class="advertises-row">
+                        <div class="advertises-card">
+                            <p>Advertise Here!</p>
+                            <h2>125x125</h2>
+                        </div>
+                        <div class="advertises-card">
+                            <p>Advertise Here!</p>
+                            <h2>125x125</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="search">
+                    <input type="text" />
+                    <button>Search</button>
+                </div>
+                <div class="popular-posts">
+                    <h4>POPULAR POSTS</h4>
+                    <p>Make Money Online Creating Websites
+                    <p>
+                    <p>Top 100 Internet Marketing Tips
+                    <p>
+                    <p>Tutorial: How to add Videos in your Post
+                    <p>
+                    <p>Sample Post Unordered List
+                    <p>
+                    <p>Sample Post Blockquote
+                    <p>
+                </div>
+                <div class="flickr-photos">
+                    <h4>FLICKR PHOTOS</h4>
+                    <div class="view-photos">
+                        <img
+                            src="https://www.nationalgeographic.com.es/medio/2018/02/27/playa-de-isuntza-lekeitio__1280x720.jpg" />
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbkQ5E2X8J4sOGLzwdNHe6HtQPdAKFffTUBw&usqp=CAU" />
+                        <img
+                            src="https://kaikucaffelatte.com/blog/wp-content/uploads/2020/03/shutterstock_510679489-scaled.jpg" />
+                        <img
+                            src="https://www.hola.com/imagenes/viajes/20180530124901/naturaleza-destinos-mundo-a-todo-color/0-571-947/colores-m.jpg?filter=w500" />
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlBjoPvwbfMzvbiHEE_PDBEcb69LNyQFFSaA&usqp=CAU" />
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH8ViS-Mbj1s26cYPG9IxcEiJr13W91plO1g&usqp=CAU" />
+                    </div>
+                </div>
+                <div class="featured-video">
+                    <h4>FEATURED VIDEO</h4>
+                    <iframe width="100%" src="https://www.youtube.com/embed/42TILZm0kww">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
